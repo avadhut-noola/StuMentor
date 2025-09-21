@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StuMentor Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+<body>
+
+  <!-- Hero Section -->
+ <!-- Hero Section -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>StuMentor</h1>
+    <p class="tagline">Spot risks early → Support students timely → Reduce dropouts</p>
+    <p class="desc">
+      A smart student success platform that merges attendance, scores, and fee data to highlight at-risk students early,
+      empowering educators with actionable insights.
+    </p>
+    <div class="btn-group">
+      <a href="dashboard.html">
+        <button class="btn">View Dashboard</button>
+      </a>
+      <!-- Teacher Dashboard linked to Hugging Face space -->
+      <a href="https://huggingface.co/spaces/Swaru2022/dropout-predictor" target="_blank" rel="noopener noreferrer">
+        <button class="btn secondary">Teacher Dashboard</button>
+      </a>
+    </div>
+  </div>
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1543295523-78c9bbdba65c?ixlib=rb-4.1.0&q=80&w=1080"
+         alt="Students dashboard"/>
+  </div>
+</section>
+
+  <!-- Idea Section -->
+  <section class="idea">
+    <div class="idea-icon">💡</div>
+    <h2>The Idea</h2>
+    <p>A platform that merges attendance, scores, and fee data to highlight at-risk students early, empowering educators with dashboards and updates.</p>
+
+    <div class="idea-cards">
+      <div class="card hover-card">
+        📈
+        <h3>Early Detection</h3>
+        <p>Identify at-risk students before it's too late.</p>
+      </div>
+      <div class="card hover-card">
+        👥
+        <h3>Timely Support</h3>
+        <p>Connect students with mentors and resources.</p>
+      </div>
+      <div class="card hover-card">
+        🔔
+        <h3>Reduce Dropouts</h3>
+        <p>Improve retention through proactive intervention.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution Section -->
+  <section class="solution">
+    <h2>Our Solution</h2>
+    <p>A comprehensive three-step approach to student success monitoring and intervention.</p>
+
+    <div class="solution-cards">
+      <div class="card hover-card">
+        <h3>📊 Data Ingestion & Processing</h3>
+        <ul>
+          <li>Attendance, scores & fees auto-fetched</li>
+          <li>Stored in databases</li>
+          <li>Indexed for fast retrieval</li>
+        </ul>
+      </div>
+      <div class="card hover-card">
+        <h3>🧠 AI + Risk Detection</h3>
+        <ul>
+          <li>Rule-based + ML thresholds</li>
+          <li>Natural language queries → SQL</li>
+          <li>Contextual insights</li>
+        </ul>
+      </div>
+      <div class="card hover-card">
+        <h3>💬 Visualization & Alerts</h3>
+        <ul>
+          <li>Dashboards (attendance, performance, fee)</li>
+          <li>WhatsApp updates for parents</li>
+          <li>Chatbot in plain English</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <h3>Ready to Transform Student Success?</h3>
+    <p>Join us in revolutionizing how institutions support students through data-driven insights and proactive intervention.</p>
+    <button class="btn white">Get Started Today</button>
+  </footer>
+
+    <!-- Floating Chatbot -->
+<div id="chatbot-icon">💬</div>
+<div id="chatbot-box">
+  <div id="chatbot-header">StuMentor Assistant ✨</div>
+  <div id="chatbot-messages"></div>
+  <input id="chatbot-input" placeholder="Ask me anything..." />
+</div>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>

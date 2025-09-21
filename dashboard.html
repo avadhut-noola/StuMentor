@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary:#4f46e5; --accent:#3b82f6; --bg:#f3f4f6; --card:#fff;
+    --text:#1f2937; --radius:12px; --shadow:0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  body {margin:0; font-family:'Inter', sans-serif; background:var(--bg); color:var(--text);}
+  header {background:var(--primary); color:white; text-align:center; padding:15px; font-size:22px; font-weight:700;}
+  .container{max-width:1200px;margin:auto;padding:20px;}
+  .grid{display:grid; gap:20px;}
+  .grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .card{background:var(--card); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); transition:0.3s; text-align:center;}
+  .card:hover{transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.12);}
+  
+  /* 🎨 KPI ICON STYLE */
+  .kpi-icon {
+    width:70px; height:70px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 12px auto;
+    font-size:30px;
+    color:white;
+    font-weight:700;
+  }
+  .blue   { background:#3b82f6; }   /* Total Students */
+  .red    { background:#ef4444; }   /* At-Risk Students */
+  .green  { background:#10b981; }   /* Avg Attendance */
+  .purple { background:#8b5cf6; }   /* Dropout Risk % */
+
+  h3{margin:0 0 10px 0; font-weight:600;}
+
+  .badge{padding:3px 8px;border-radius:6px;font-size:12px;color:white;font-weight:600;}
+  .High{background:#EF4444;}
+  .Medium{background:#F59E0B;}
+  .Low{background:#10B981;}
+
+  .btn{background:var(--primary); color:white; padding:8px 15px; border:none; border-radius:8px; cursor:pointer; font-weight:600;}
+  .btn:hover{background:#3730a3;}
+
+  .tabs{display:flex;gap:10px;margin-bottom:20px;}
+  .tab{padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;background:#e5e7eb;}
+  .tab.active{background:var(--primary); color:white;}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+
+  /* Student Cards */
+  .student-card{border:1px solid #ddd; border-radius:10px;padding:15px;margin-bottom:10px; transition:0.3s;}
+  .student-card:hover{background:#f9fafb;}
+  .student-header{display:flex;justify-content:space-between;align-items:center;}
+  .student-info{display:flex;gap:10px;align-items:center;}
+  .progress-bar{background:#e5e7eb;border-radius:6px;height:10px;width:100%;margin-top:5px;}
+  .progress-fill{height:100%;border-radius:6px;background:var(--accent);}
+
+  /* KPI Details Row */
+  .kpi-details-row {
+    grid-column:1 / -1;
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    margin-top:-10px;
+    display:none;
+    animation:fadeIn .25s ease;
+  }
+  .kpi-details-row.active {display:block;}
+  .kpi-details-row h4{margin-top:0;color:var(--primary);}
+
+  /* formatted risk students in details */
+  .risk-item {
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+  }
+  .risk-item:last-child { border-bottom:none; }
+
+  .risk-name {
+    font-weight:600;
+    display:block;
+    color:var(--text);
+  }
+
+  .risk-reason {
+    display:block;
+    font-size:13px;
+    color:#6b7280;
+    margin-top:2px;
+  }
+
+  @keyframes fadeIn {from{opacity:0; transform:translateY(-5px);}to{opacity:1; transform:translateY(0);}}
+
+  /* Home button nav */
+  .nav-bar {display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:auto;}
+  .home-btn {background:white; color:var(--primary); padding:6px 14px; border-radius:var(--radius); font-weight:600; text-decoration:none; transition:background .2s ease, color .2s ease;}
+  .home-btn:hover {background:var(--accent); color:white;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-bar">
+    <a href="index.html" class="home-btn">🏠 Home</a>
+    <span>🎓 AI-Powered Student Dashboard</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('kpi')">📊 KPI</div>
+    <div class="tab" onclick="openTab('charts')">📈 Charts</div>
+    <div class="tab" onclick="openTab('students')">👩‍🎓 Students</div>
+    <div class="tab" onclick="openTab('skills')">🛠 Skill Rebuilder</div>
+  </div>
+
+  <!-- ✅ KPI Cards -->
+  <div id="kpi" class="tab-content active">
+    <div class="grid grid-4" id="kpi-grid">
+      
+      <div class="card" onmouseover="showDetails('total')">
+        <div class="kpi-icon blue">👥</div>
+        <h3>Total Students</h3><p>1247</p>
+      </div>
+
+      <div class="card" onmouseover="showDetails('risk')">
+        <div class="kpi-icon red">⚠️</div>
+        <h3>At-Risk Students</h3><p>89</p>
+      </div>
+
+      <div class="card" onmouseover="showDetails('attendance')">
+        <div class="kpi-icon green">📅</div>
+        <h3>Avg Attendance</h3><p>87.4%</p>
+      </div>
+
+      <div class="card" onmouseover="showDetails('dropout')">
+        <div class="kpi-icon purple">🎯</div>
+        <h3>Dropout Risk %</h3><p>7.1%</p>
+      </div>
+
+      <!-- details row -->
+      <div class="kpi-details-row" id="details-box"></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div id="charts" class="tab-content">
+    <div class="grid grid-4">
+      <div class="card"><h3>Attendance Trend</h3><canvas id="attendanceChart" height="150"></canvas></div>
+      <div class="card"><h3>Performance Trend</h3><canvas id="performanceChart" height="150"></canvas></div>
+      <div class="card"><h3>Risk Distribution</h3><canvas id="riskChart" height="150"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Students -->
+  <div id="students" class="tab-content"><div id="studentContainer"></div></div>
+
+  <!-- Skill Rebuilder -->
+  <div id="skills" class="tab-content">
+    <div class="card"><h3>Skill Rebuilder AI</h3>
+      <input type="number" id="studentIdInput" placeholder="Enter Student ID" style="padding:8px; border-radius:6px; width:200px;">
+      <button class="btn" onclick="generatePlan()">🎯 Generate Plan</button>
+      <pre id="planOutput" style="margin-top:10px;"></pre>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Tabs
+  function openTab(id){
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    document.querySelector('#'+id).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Students Data
+  const students = [
+    {id:1,name:"Priya Sharma",class:"10th A",attendance:65,lastScore:42,fee:"Overdue",risk:"High",reason:"Low attendance & low scores"},
+    {id:2,name:"Rahul Kumar",class:"9th B",attendance:58,lastScore:38,fee:"Paid",risk:"High",reason:"Irregular submissions & fee overdue"},
+    {id:3,name:"Anita Singh",class:"11th C",attendance:78,lastScore:55,fee:"Overdue",risk:"Medium",reason:"Declining grades in core subjects"},
+    {id:4,name:"Vikram Patel",class:"8th A",attendance:72,lastScore:48,fee:"Paid",risk:"Medium",reason:"Poor participation & engagement"}
+  ];
+
+  // Render students in Students tab
+  const container = document.getElementById("studentContainer");
+  students.forEach(s=>{
+    const card = document.createElement("div");
+    card.className="student-card";
+    card.innerHTML=`
+      <div class="student-header">
+        <div class="student-info"><strong>${s.name}</strong> | ${s.class}</div>
+        <span class="badge ${s.risk}">${s.risk}</span>
+      </div>
+      <div style="margin-top:10px;">
+        Attendance: ${s.attendance}% 
+        <div class="progress-bar"><div class="progress-fill" style="width:${s.attendance}%"></div></div>
+        Last Score: ${s.lastScore}%<br>
+        Fee Status: <span class="badge ${s.fee==='Paid'?'Low':'High'}">${s.fee}</span>
+      </div>`;
+    container.appendChild(card);
+  });
+
+  // Charts
+  const attendanceData = {labels:["Mon","Tue","Wed","Thu","Fri","Sat"],data:[92,88,85,82,79,95]};
+  const performanceData = {labels:["Jan","Feb","Mar","Apr","May","Jun"],data:[78,80,75,77,82,85]};
+  const riskData = {labels:["Low","Medium","High"],data:[980,178,89],colors:["#10B981","#F59E0B","#EF4444"]};
+
+  new Chart(document.getElementById("attendanceChart"),{
+    type:"line",
+    data:{labels:attendanceData.labels,datasets:[{label:"Attendance %",data:attendanceData.data,borderColor:"#3B82F6",backgroundColor:"rgba(59,130,246,0.2)",fill:true}]},
+    options:{responsive:true,plugins:{legend:{display:false}}}
+  });
+  new Chart(document.getElementById("performanceChart"),{
+    type:"line",
+    data:{labels:performanceData.labels,datasets:[{label:"Average Score",data:performanceData.data,borderColor:"#8B5CF6",fill:false,tension:0.3}]},
+    options:{responsive:true,plugins:{legend:{display:false}}}
+  });
+  new Chart(document.getElementById("riskChart"),{
+    type:"doughnut",
+    data:{labels:riskData.labels,datasets:[{data:riskData.data,backgroundColor:riskData.colors}]},
+    options:{responsive:true,plugins:{legend:{position:"bottom"}}}
+  });
+
+  // KPI details hover (now dynamic from student array for at-risk list)
+  const detailsBox = document.getElementById("details-box");
+
+  function showDetails(type){
+    if(type === "risk"){
+      const atRisk = students.filter(s => s.risk === "High" || s.risk === "Medium");
+      detailsBox.innerHTML = `
+        <h4>At-Risk Students</h4>
+        <ul>
+          ${atRisk.map(s => `
+            <li class="risk-item">
+              <span class="risk-name">${s.name} (${s.class})</span>
+              <span class="risk-reason">${s.reason}</span>
+            </li>
+          `).join("")}
+        </ul>
+      `;
+    } 
+    else if(type === "total"){
+      detailsBox.innerHTML = `
+        <h4>Total Students</h4>
+        <ul><li>Class 10th: 400</li><li>Class 9th: 300</li><li>Class 8th: 250</li><li>Others: 297</li></ul>
+      `;
+    }
+    else if(type === "attendance"){
+      detailsBox.innerHTML = `
+        <h4>Avg Attendance</h4>
+        <ul><li>This week highest: 92%</li><li>Lowest: 82%</li><li>Stable overall</li></ul>
+      `;
+    }
+    else if(type === "dropout"){
+      detailsBox.innerHTML = `
+        <h4>Dropout Risk %</h4>
+        <ul><li>7.1% at moderate risk</li><li>Classes 9th–10th highest risk</li><li>Counseling recommended</li></ul>
+      `;
+    }
+
+    detailsBox.classList.add("active");
+  }
+
+  document.getElementById("kpi-grid").addEventListener("mouseleave",()=>{
+    detailsBox.classList.remove("active");
+    detailsBox.innerHTML="";
+  });
+
+  // Skill Rebuilder
+  function generatePlan(){
+    const id = parseInt(document.getElementById("studentIdInput").value);
+    const student = students.find(s=>s.id===id);
+    const output = document.getElementById("planOutput");
+    if(!student){ output.textContent="❌ Student ID not found."; return; }
+    let recommendations = [];
+    if(student.lastScore<60){
+      recommendations.push("Math - Algebra Basics","English - Writing Skills");
+    } else if(student.lastScore<75){
+      recommendations.push("Math - Trigonometry Practice","Science - Organic Chemistry");
+    } else {
+      recommendations.push("Advanced Math - Geometry","English - Reading Comprehension");
+    }
+    if(student.attendance<70) recommendations.push("Motivation & Time Management");
+    output.textContent="🎯 Skill Rebuilder Plan:\n" + recommendations.map((r,i)=>`${i+1}. ${r}`).join("\n");
+  }
+</script>
+</body>
+</html>
