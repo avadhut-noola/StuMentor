@@ -4,97 +4,183 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counseling - StuMentor</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --accent: #3b82f6;
+      --bg: #f3f4f6;
+      --card: #fff;
+      --text: #1f2937;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .nav-bar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 15px;
+      font-weight: 600;
+    }
+
+    section.counseling {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .counseling-container {
+      width: 100%;
+      max-width: 500px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px 25px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      font-size: 26px;
+    }
+
+    p {
+      margin-bottom: 25px;
+      font-size: 15px;
+      color: #4b5563;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      text-align: left;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    input, select, textarea {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    button.btn {
+      background: var(--primary);
+      color: white;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    button.btn:hover {
+      background: #3730a3;
+    }
+
+    .back-home {
+      margin-top: 20px;
+    }
+
+    .back-home a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back-home a:hover {
+      text-decoration: underline;
+    }
+
+    select option {
+      padding: 5px;
+    }
+  </style>
 </head>
-<style>
-  :root {
-    --primary:#4f46e5; --accent:#3b82f6; --bg:#f3f4f6; --card:#fff;
-    --text:#1f2937; --radius:12px; --shadow:0 4px 12px rgba(0,0,0,0.08);
-  }
-  body {margin:0; font-family:'Inter', sans-serif; background:var(--bg); color:var(--text);}
-  header {background:var(--primary); color:white; text-align:center; padding:15px; font-size:22px; font-weight:700;}
-  .container{max-width:1200px;margin:auto;padding:20px;}
-  .grid{display:grid; gap:20px;}
-  .grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
-  .card{background:var(--card); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); transition:0.3s;}
-  .card:hover{transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.12);}
-  h3{margin:0 0 10px 0; font-weight:600;}
-  .badge{padding:3px 8px;border-radius:6px;font-size:12px;color:white;font-weight:600;}
-  .High{background:#EF4444;}
-  .Medium{background:#F59E0B;}
-  .Low{background:#10B981;}
-  table{width:100%;border-collapse:collapse;margin-top:10px;}
-  th, td{padding:10px;text-align:left;border-bottom:1px solid #ddd;}
-  tr:hover{background:#e5e7eb;}
-  .btn{background:var(--primary); color:white; padding:8px 15px; border:none; border-radius:8px; cursor:pointer; font-weight:600;}
-  .btn:hover{background:#3730a3;}
-  .tabs{display:flex;gap:10px;margin-bottom:20px;}
-  .tab{padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;background:#e5e7eb;}
-  .tab.active{background:var(--primary); color:white;}
-  .tab-content{display:none;}
-  .tab-content.active{display:block;}
-  .student-card{border:1px solid #ddd; border-radius:10px;padding:15px;margin-bottom:10px; transition:0.3s;}
-  .student-card:hover{background:#f9fafb;}
-  .student-header{display:flex;justify-content:space-between;align-items:center;}
-  .student-info{display:flex;gap:10px;align-items:center;}
-  .progress-bar{background:#e5e7eb;border-radius:6px;height:10px;width:100%;margin-top:5px;}
-  .progress-fill{height:100%;border-radius:6px;background:var(--accent);}
-</style>
 <body>
 
 <header>
   <div class="nav-bar">
- <a href="index.html" class="home-btn">🏠 Home</a>
-    <span>🎓AI-Powered Student Dashboard</span>
+    <a href="index.html" class="home-btn">🏠 Home</a>
+    <span>🎓 AI-Powered Student Dashboard</span>
   </div>
 </header>
 
-  <section class="counseling">
-    <div class="counseling-container">
-      <h1>🎓 Student Counseling</h1>
-      <p>Fill out the form below to book a counseling session.</p>
+<section class="counseling">
+  <div class="counseling-container">
+    <h1>🎓 Student Counseling</h1>
+    <p>Fill out the form below to book a counseling session.</p>
 
-      <form class="counseling-form" id="counselingForm">
-        <label for="name">Full Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+    <form class="counseling-form" id="counselingForm">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required>
 
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        <label for="topic">Counseling Topic:</label>
-        <select id="topic" name="topic" required>
-          <option value="">Select a topic</option>
-          <option value="Academic Guidance">📘 Academic Guidance</option>
-          <option value="Career Advice">💼 Career Advice</option>
-          <option value="Personal Support">💬 Personal Support</option>
-        </select>
+      <label for="topic">Counseling Topic:</label>
+      <select id="topic" name="topic" required>
+        <option value="">Select a topic</option>
+        <option value="Academic Guidance">📘 Academic Guidance</option>
+        <option value="Career Advice">💼 Career Advice</option>
+        <option value="Personal Support">💬 Personal Support</option>
+      </select>
 
-        <label for="message">Additional Notes:</label>
-        <textarea id="message" name="message" rows="4" placeholder="Enter details here..."></textarea>
+      <label for="message">Additional Notes:</label>
+      <textarea id="message" name="message" rows="4" placeholder="Enter details here..."></textarea>
 
-        <button type="submit" class="btn">Book Session</button>
-      </form>
+      <button type="submit" class="btn">Book Session</button>
+    </form>
 
-      <p class="back-home"><a href="index.html">⬅ Back to Home</a></p>
-    </div>
-  </section>
+    <p class="back-home"><a href="index.html">⬅ Back to Home</a></p>
+  </div>
+</section>
 
-  <script>
-    const form = document.getElementById('counselingForm');
+<script>
+  const form = document.getElementById('counselingForm');
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault(); // Prevent page reload
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      const name = encodeURIComponent(document.getElementById('name').value);
-      const email = encodeURIComponent(document.getElementById('email').value);
-      const topic = encodeURIComponent(document.getElementById('topic').value);
-      const message = encodeURIComponent(document.getElementById('message').value);
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const email = encodeURIComponent(document.getElementById('email').value);
+    const topic = encodeURIComponent(document.getElementById('topic').value);
+    const message = encodeURIComponent(document.getElementById('message').value);
 
-      // Redirect to session page with query parameters
-      window.location.href = `counsiling-sessio.html?name=${name}&email=${email}&topic=${topic}&message=${message}`;
-    });
-  </script>
+    window.location.href = `counsiling-sessio.html?name=${name}&email=${email}&topic=${topic}&message=${message}`;
+  });
+</script>
 
 </body>
 </html>
