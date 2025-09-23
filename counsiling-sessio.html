@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counseling Session - StuMentor</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --accent: #3b82f6;
+      --bg: #f3f4f6;
+      --card: #fff;
+      --text: #1f2937;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    header .home-btn {
+      background: #10B981;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    header .home-btn:hover {
+      background: #059669;
+    }
+
+    .session-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 500px;
+      width: 90%;
+      margin: 50px auto;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .session-container h1 {
+      font-size: 26px;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+
+    .session-details {
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .session-details p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background: var(--primary);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #3730a3;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+  <a href="index.html" class="home-btn">🏠 Home</a>
+  <span>🎓 AI-Powered Student Dashboard</span>
+</header>
+
+<style>
+header .home-btn {
+  background: white;           /* default white */
+  color: var(--primary);       /* text blue */
+  padding: 8px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+header .home-btn:hover {
+  background: var(--primary);  /* blue background on hover */
+  color: white;                /* white text on hover */
+}
+</style>
+
+
+  <!-- Counseling session details -->
+  <div class="session-container">
+    <h1>🎉 Counseling Session Booked!</h1>
+    <p>Thank you for submitting your request. Here are your details:</p>
+
+    <div class="session-details" id="sessionDetails">
+      <!-- Dynamic details will appear here -->
+    </div>
+
+    <a href="index.html" class="btn">⬅ Back to Home</a>
+  </div>
+
+  <script>
+    // Get form data from URL
+    const params = new URLSearchParams(window.location.search);
+
+    const name = params.get("name");
+    const email = params.get("email");
+    const topic = params.get("topic");
+    const message = params.get("message");
+
+    // Insert details into the page
+    document.getElementById("sessionDetails").innerHTML = `
+      <p><strong>👤 Name:</strong> ${name || "N/A"}</p>
+      <p><strong>📧 Email:</strong> ${email || "N/A"}</p>
+      <p><strong>📌 Topic:</strong> ${topic || "N/A"}</p>
+      <p><strong>📝 Notes:</strong> ${message || "None provided"}</p>
+    `;
+  </script>
+    
+</body>
+</html>
